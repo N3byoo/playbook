@@ -45,3 +45,16 @@ Template for each cycle:
 **What was hard / broke:** SURFACE and BACKGROUND colors were too close (4-point difference) — cards were invisible
 **Patterns learned:** Always verify card background vs app background has enough contrast before shipping. Add SURFACE_ELEVATED as a step up.
 **APK:** https://expo.dev/artifacts/eas/9whWa7nAhJcLbBRdkwJUAP.apk
+
+---
+
+## Cycle 3 — 2026-03-20
+**Commit:** 84bf9dd + 8eb177d
+**What changed:**
+- CLAUDE.md added at repo root with Senior Agent rules and full design system reference
+- GitHub Actions EAS auto-build workflow — triggers on every push to master
+- 6 memory files initialized (user profile, project state, backlog, workflow, decisions)
+- Playbook repo created at github.com/N3byoo/playbook with 3 skills + 3 process docs
+**What was hard / broke:** First Actions run failed — EXPO_TOKEN not passed explicitly to EAS CLI despite using expo-github-action. Fixed by adding explicit `env: EXPO_TOKEN` on the build step. Second run passed in 8m27s.
+**Patterns learned:** `expo/expo-github-action` installs the CLI but EAS still needs `EXPO_TOKEN` passed explicitly as an env var on the build step. Always add it.
+**APK:** Pipeline verified working — APK now builds automatically on every push to master.
