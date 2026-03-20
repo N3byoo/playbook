@@ -48,6 +48,25 @@ Template for each cycle:
 
 ---
 
+## Cycle 4 — 2026-03-21
+**Commit:** 585e993
+**What changed:**
+- Fixed streak calculation: zero-padded month/day in date keys (was creating inconsistent keys like `2026-2-5` vs `2026-02-05`)
+- Fixed exit modal: EXIT button now actually exits, STAY button stays (was backwards)
+- Fixed ghost notifications: now cancels both notificationId and overdueNotificationId on delete
+- Created shared date utility (src/utils/dateUtils.js) to deduplicate formatting across TaskCard and HomeScreen
+- Added React.memo to all 8 components for render optimization
+- Replaced ScrollView with FlatList on HomeScreen for virtualized task lists
+- Added useMemo/useCallback throughout HomeScreen for derived state
+- Added haptic feedback (expo-haptics) on toggle, save, delete, priority, reminder
+- Added saving state with disabled button on CreateEditScreen
+- Fixed react-native-screens version mismatch
+**What was hard / broke:** The vibrant-lamarr branch was never merged to master — discovered master was 10 commits behind with no app code. Had to merge first before any work could start. Also the playbook plugin wasn't registered in Claude Code settings.
+**Patterns learned:** Always verify master has the latest code before starting a cycle. Check plugin registration in all 3 config files (known_marketplaces.json, installed_plugins.json, settings.json).
+**APK:** Build triggered — waiting for EAS
+
+---
+
 ## Cycle 3 — 2026-03-20
 **Commit:** 84bf9dd + 8eb177d
 **What changed:**
