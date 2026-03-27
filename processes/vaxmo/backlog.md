@@ -23,3 +23,6 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 - [x] P2: Performance: React.memo + FlatList + useMemo — Cycle 4
 - [x] P2: Shared date utility to deduplicate code — Cycle 4
 - [x] P1: Fix ghost notifications on task delete — Cycle 4
+- [x] P1: Custom time picker in Settings (replace Android default) — Cycle 5
+- [x] P1: Default date to today on Create Mission — Cycle 5
+- [x] P2: Swipe-to-dismiss on all bottom sheet modals — Cycle 5

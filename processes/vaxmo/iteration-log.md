@@ -77,3 +77,16 @@ Template for each cycle:
 **What was hard / broke:** First Actions run failed — EXPO_TOKEN not passed explicitly to EAS CLI despite using expo-github-action. Fixed by adding explicit `env: EXPO_TOKEN` on the build step. Second run passed in 8m27s.
 **Patterns learned:** `expo/expo-github-action` installs the CLI but EAS still needs `EXPO_TOKEN` passed explicitly as an env var on the build step. Always add it.
 **APK:** Pipeline verified working — APK now builds automatically on every push to master.
+
+---
+
+## Cycle 5 — 2026-03-28
+**Commit:** c94760b
+**What changed:**
+- Replaced Android native DateTimePicker with custom VaxmoDateTimePicker (`mode="time"`) in Settings for morning/evening reminder times — no more Android default popups anywhere
+- New missions auto-set date to today (user only picks execution time manually)
+- Created SwipeableBottomSheet component (PanResponder drag-to-dismiss) and applied to all 3 bottom sheet modals (Settings, History Task, Task Detail)
+- Bumped version to 1.5.0
+**What was hard / broke:** Nothing major — clean implementation. Had to split date vs time-set state in CreateEditScreen to distinguish "date defaulted to today" from "user explicitly picked a time."
+**Patterns learned:** When adding a `mode` prop to an existing picker, make sure `handleConfirm` returns a different shape per mode (datetime returns `{date, timeType}`, time-only returns `{time: "HH:MM"}`). Consumers need to handle both.
+**APK:** EAS build triggered — waiting for completion
