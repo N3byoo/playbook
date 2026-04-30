@@ -80,6 +80,35 @@ Template for each cycle:
 
 ---
 
+## Cycle 7 — 2026-04-30
+**Commit:** 6eeaab6 / 5ccb911
+**What changed:**
+- Notification duplicate prevention — `cancelExisting()` helper; daily reminders only on mount, task notifications only on foreground resume (`rescheduleTasksOnly`)
+- DailyReview swipe navigation — PanResponder horizontal swipe to advance/retreat slides; stale closure solved with `currentSlideRef` + `slideCountRef`
+- "Close Your Day" button — gradient footer on HomeScreen today list when all tasks done, opens full DailyReview
+- "Add mission for tomorrow" pre-fills CreateEdit with tomorrow 9am date
+- WeeklyTracker: empty days silent on tap; single tap = inline stats, double tap = navigate to day; `mode: 'light'` always passed from ProfileScreen
+- TaskDetailScreen notes made read-only (removed inline TextInput edit, replaced with LinearGradient card)
+**What was hard / broke:** GitHub Actions artifact storage quota was full — Direct APK upload failed (code was fine). Two duplicate EAS builds stacked in queue from session boundary; had to cancel them. PanResponder stale closure on `currentSlide` required ref pattern.
+**Patterns learned:** Separate daily reminder scheduling (mount) from task notification rescheduling (foreground) to prevent duplicate notifications. PanResponder created via `useRef` captures initial state — always mirror changing values into refs for use inside the closure.
+**APK:** https://expo.dev/artifacts/eas/csZeZY3TY8pHzCHU8KmmJe.apk
+
+---
+
+## Cycle 6 — 2026-04-06
+**Commit:** 450ef28
+**What changed:**
+- DailyReview slideshow screen (light + full modes), notification fixes, inline notes, Outfit fonts loaded via expo-font
+- Full onboarding flow: 5 question screens, loading, 4 story slides + splash screen; rebuilt with safe area insets and screen-relative sizing
+- SVG VaxmoMark logo on onboarding; tab-aware empty states; weekly tracker component
+- Nav architecture fixes, drag reorder on HomeScreen, bottom sheet improvements
+- SDK 55 upgrade (expo + expo-notifications); Reanimated 4 crash fixed by replacing DraggableFlatList; BackHandler cleanup crash fixed
+**What was hard / broke:** Reanimated 4 incompatibility with DraggableFlatList caused crash — replaced with custom FlatList drag. EAS build needed babel-preset-expo in devDependencies.
+**Patterns learned:** Always check library compatibility against Reanimated version before using drag libs. Screen-relative sizing (`Dimensions.get('window')`) is the correct approach for onboarding fullscreen layouts.
+**APK:** https://expo.dev/artifacts/eas/64PvcwUVraePtkBmZHfZxT.apk
+
+---
+
 ## Cycle 5 — 2026-03-28
 **Commit:** c94760b
 **What changed:**

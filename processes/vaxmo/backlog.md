@@ -26,3 +26,12 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 - [x] P1: Custom time picker in Settings (replace Android default) — Cycle 5
 - [x] P1: Default date to today on Create Mission — Cycle 5
 - [x] P2: Swipe-to-dismiss on all bottom sheet modals — Cycle 5
+- [x] P1: DailyReview slideshow screen (light + full modes) — Cycle 6
+- [x] P1: Onboarding flow (5 questions, story slides, splash) — Cycle 6
+- [x] P1: Weekly tracker component on ProfileScreen — Cycle 6
+- [x] P1: Fix notification duplicates (cancel-before-schedule, separate daily vs task reschedule) — Cycle 7
+- [x] P1: DailyReview swipe navigation (PanResponder) — Cycle 7
+- [x] P2: "Close Your Day" button when all today's tasks done — Cycle 7
+- [x] P2: "Add mission for tomorrow" pre-fills tomorrow date — Cycle 7
+- [x] P1: WeeklyTracker empty-day guard + single/double tap UX — Cycle 7
+- [x] P2: TaskDetailScreen notes read-only (removed inline edit) — Cycle 7
