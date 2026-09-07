@@ -80,6 +80,18 @@ Template for each cycle:
 
 ---
 
+## Cycle 8 — 2026-09-07
+**Commit:** 2eb48bb (also d2425d4, 4b37fdc)
+**What changed:**
+- Widget finally works. Two separate bugs: the launcher rejected it outright because both layouts used bare `<View>` elements as dividers, and `RemoteViews` installs an inflater filter that only accepts classes carrying `@RemoteView` — `android.view.View` does not have it. Replaced with `ImageView`. Then made it useful: tap anywhere opens the app, task text 11sp → 15sp, red left-edge critical marker per row, real strikethrough on completed tasks.
+- Onboarding restructured from 11 steps to 9 — added an animated welcome intro as step 0, removed the three story slides ("The Problem" / "Why It Happens" / "The Solution") and every helper only they used. Net −485/+168 lines in one file.
+- Bumped 1.9.0 → 1.10.0. Reconciled the backlog: 7 items were sitting in Active that had already shipped.
+**What was hard / broke:** The C: drive hit literally 0 MB free mid-cycle and `git` itself failed to write its index lock, blocking a commit. Cleared ~23 GB (Windows Update cache alone was 13.5 GB) and relocated the Gradle cache, Android SDK and npm cache to D:. Two self-inflicted mistakes during that: the TEMP sweep deleted the agent's own task-output files, and a process-kill filter matched the very PowerShell session running it, aborting the command with `wuauserv` left stopped — restarted it. Separately, `android.jar` turned out to be a stub jar that strips `@RemotableViewMethod`, so reflection-based RemoteViews calls can't be verified locally.
+**Patterns learned:** RemoteViews rejects any view class without `@RemoteView` — check with `javap` against `android.jar` before adding a view type to a widget layout; class-level annotations survive the stub jar even though method-level ones don't. `StrikethroughSpan` and `StyleSpan` are both `ParcelableSpan`, so styling via `SpannableString` through `setTextViewText` survives parcelling into the launcher process — no reflection and no checkmark-prefix hacks needed. When deleting the Windows Update cache, always restart `wuauserv` in a `finally`.
+**APK:** https://github.com/N3byoo/Vaxmo/releases/download/v1.10.0-50/Vaxmo-v1.10.0.apk
+
+---
+
 ## Cycle 7 — 2026-04-30
 **Commit:** 6eeaab6 / 5ccb911
 **What changed:**
