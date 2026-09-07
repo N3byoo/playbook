@@ -80,6 +80,19 @@ Template for each cycle:
 
 ---
 
+## Cycle 9 — 2026-09-07
+**Commit:** f7c7c18
+**What changed:**
+- Fixed notifications duplicating 10–15×. `rescheduleTasksOnly()` runs on every foreground; it cancelled `task.notificationId`, scheduled a replacement, and discarded the returned id. Nothing wrote it back, so the stored id stayed pointing at the notification cancelled on the *first* foreground — every later run cancelled a dead id and scheduled another live one nobody held an id for. One orphan per task per foreground, forever. `rescheduleAll()` had the same defect.
+- Added `persistNotificationIds()` + a shared `rebuildTaskNotifications()` so both paths write ids back, plus a one-time flag-guarded `repairScheduledNotifications()` to clear orphans already accumulated on existing installs (their ids are unrecoverable, so a single `cancelAllScheduledNotificationsAsync()` and rebuild is the only way out).
+- Replaced the widget "ADD WIDGET" system Alert with an in-sheet animated guide: 250ms crossfade to a mock home-screen row with a pulsing press indicator, four numbered steps, CLOSE button. The user never leaves the app.
+- Version 1.10.0 → 1.11.0.
+**What was hard / broke:** The obvious hypotheses were all wrong. It looked exactly like a concurrency bug — duplicate accumulation, AppState firing repeatedly, a suspected `cancelExisting` race — but the calls are sequential and correctly awaited. An in-flight lock, the intuitive fix, would not have changed anything. The bug was a missing write, not a race. Worth remembering: "duplicates accumulate over time" points at state that never got persisted at least as often as it points at concurrency.
+**Patterns learned:** Any schedule-then-store sequence must persist the returned id in the same operation, or the id is lost and the notification becomes uncancellable. When a bug has already shipped and corrupted user state, the fix needs a migration as well as a code change — fixing forward leaves existing installs broken forever. Also: check that new UI colours go through COLORS tokens *before* committing; the first draft of the guide added three raw hex literals.
+**APK:** https://github.com/N3byoo/Vaxmo/releases/download/v1.11.0-51/Vaxmo-v1.11.0.apk
+
+---
+
 ## Cycle 8 — 2026-09-07
 **Commit:** 2eb48bb (also d2425d4, 4b37fdc)
 **What changed:**

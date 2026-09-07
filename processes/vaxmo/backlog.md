@@ -58,3 +58,7 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 - [x] P1: Widget "Couldn't add widget" — bare `<View>` is illegal in RemoteViews — Cycle 8
 - [x] P1: Widget tap-to-open + glanceable 15sp task text — Cycle 8
 - [x] P1: Onboarding restructure — welcome intro added, 3 story slides removed, 11 steps → 9 — Cycle 8
+- [x] P1: Notifications duplicating 10-15x — reschedule scheduled new notifications
+      and discarded the returned ids, orphaning one per task per foreground — Cycle 9
+- [x] P2: Widget "how to add it" guide replaces the system Alert — animated,
+      in-sheet, never leaves the app — Cycle 9
