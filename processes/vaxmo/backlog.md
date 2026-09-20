@@ -5,7 +5,7 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 ## Active
 
 - [ ] P1: Stop the lockfile re-breaking Play builds. EAS runs Node 20 / npm 10.9.3 with `npm ci`; this machine runs npm 11.6.2, whose `npm install` strips node_modules/tinyglobby/node_modules/picomatch@4.0.7 and makes the next EAS build fail at Install dependencies. Either align local Node to 20, or switch the Direct workflow to `npm ci` so drift fails on push instead of at release time.
-- [ ] P1: Upload the first AAB (v1.11.0, versionCode 4) to Play Console and enrol in Play App Signing.
+- [ ] P1: Upload AAB v1.11.0 versionCode 5 to Play Console internal testing. versionCode 4 is already consumed on the track, so every new upload needs a strictly higher number — eas.json autoIncrement handles this, but note that failed builds consume numbers too.
 - [ ] P1: Upgrade the 10 packages `expo install --check` flags — react-native
       0.83.2 → 0.83.10 and expo 55.0.9 → 55.0.31 among them. Needs its own cycle:
       two patch-package patches pin exact versions
