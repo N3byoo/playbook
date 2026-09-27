@@ -80,6 +80,19 @@ Template for each cycle:
 
 ---
 
+## Cycle 12 — 2026-09-27 (Daily build, part C of 3)
+**Commit:** 2e1d401 — committed locally, NOT pushed
+**What changed:**
+- Alarm-style task reminders: three synthesized sounds (Pulse / Rise / Chime) from a committed generator script, one MAX-importance channel per sound, a sound picker with in-app preview, and a Settings default. Stable `alarm-<taskId>` identifier.
+- The alarm *replaces* the task's normal time notification rather than joining it — the old "Enable Reminder" switch turned out to be dead for every timed task, so adding an alarm alongside would have fired two notifications at once.
+- Migrated `reminderEnabled: true` tasks to alarms, with a one-time cold-start rebuild so they ring as alarms immediately.
+- Step 4 (exact-alarm check + explainer) NOT built: needs custom native code for a reliable check.
+**What was hard / broke:** Two dependency traps. (1) expo-audio defaults to a background playback service with FOREGROUND_SERVICE_MEDIA_PLAYBACK, a restricted Play declaration — disabled via plugin config. (2) expo-audio declares expo-asset as a peer with range `*`; npm resolved it to SDK **57**'s expo-asset and would have autolinked it into an SDK 55 app. Installing with raw npm (to protect the lockfile) bypasses `expo install`'s version pinning, so this needs an explicit audit. The real Gradle manifest merge failed twice on dl.google.com timeouts, so permissions were verified component by component — including fetching and reading the Media3 AARs expo-audio depends on — rather than from a true merge. Also: a missing `STORAGE_KEYS` import in App.js would have crashed at launch.
+**Patterns learned:** After any `npm install` of an Expo module, audit every top-level SDK-managed package against `node_modules/expo/bundledNativeModules.json` — wildcard peer ranges pull the latest SDK. Read a library's *config plugin defaults* as well as its manifest: both expo-image-picker and expo-audio add permissions by default. `PermissionsAndroid.check()` is useless for app-op permissions like SCHEDULE_EXACT_ALARM. Generated assets should ship with their generator script — provenance becomes provable.
+**APK:** not built — committed locally, awaiting push instruction
+
+---
+
 ## Cycle 11 — 2026-09-27 (Daily build, part B of 3)
 **Commit:** d32e3a0 — committed locally, NOT pushed (user now controls pushes; a push triggers the APK build)
 **What changed:**
