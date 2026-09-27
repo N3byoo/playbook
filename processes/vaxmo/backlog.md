@@ -4,7 +4,6 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 
 ## Active
 
-- [ ] P1: Stop the lockfile re-breaking Play builds. EAS runs Node 20 / npm 10.9.3 with `npm ci`; this machine runs npm 11.6.2, whose `npm install` strips node_modules/tinyglobby/node_modules/picomatch@4.0.7 and makes the next EAS build fail at Install dependencies. Either align local Node to 20, or switch the Direct workflow to `npm ci` so drift fails on push instead of at release time.
 - [ ] P1: Upload AAB v1.11.0 versionCode 5 to Play Console internal testing. versionCode 4 is already consumed on the track, so every new upload needs a strictly higher number — eas.json autoIncrement handles this, but note that failed builds consume numbers too.
 - [ ] P1: Upgrade the 10 packages `expo install --check` flags — react-native
       0.83.2 → 0.83.10 and expo 55.0.9 → 55.0.31 among them. Needs its own cycle:
@@ -65,3 +64,7 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 - [x] P2: Widget "how to add it" guide replaces the system Alert — animated,
       in-sheet, never leaves the app — Cycle 9
 - [x] P1: First Play Store production AAB — package lowercased to com.n3byoo.vaxmo, USE_EXACT_ALARM removed, lockfile synced for npm 10, EAS keystore created — 2026-09-17
+- [x] P1: Notifications switch now sticks — one reader (areNotificationsEnabled), every scheduler gated incl. task create/edit and Daily Review, cold-start sweep when off — Cycle 10
+- [x] P1: Lockfile drift guard — Direct workflow runs npm ci, so drift fails on push (d6cef06). Local npm 11 still strips the picomatch entry; CI now catches it — Cycle 9/10
+- [x] P1: no-undef lint made a required Phase 5 gate (npm run lint:undef), after the COLORS/GRADIENT crash series — Cycle 10
+- [x] P1: Progress check-ins, multi-select onboarding Q1-Q3, drag glitch, header gap — Cycle 10

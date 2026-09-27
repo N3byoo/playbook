@@ -80,6 +80,34 @@ Template for each cycle:
 
 ---
 
+## Cycle 11 — 2026-09-27 (Daily build, part B of 3)
+**Commit:** d32e3a0 — committed locally, NOT pushed (user now controls pushes; a push triggers the APK build)
+**What changed:**
+- Photos on tasks: take/choose up to 3, resized to 1600px and saved as JPEG q0.7 into app document storage. New `imageService.js`, `TaskImageThumbs`, `ImageViewer` (swipe down to dismiss). File cleanup follows the data via the `onTasksSaved` listener, with transactional editing and a cold-start orphan sweep. The widget now receives only `{title, status}`.
+- Swipe navigation Today → Upcoming → On Hold → Profile and back. Home's tab lifted into TabContainer; `useSwipeNavigation` kept on the bubble phase, with a direction lock and a drag guard. Fixed the hook's stale closure.
+- Blocked RECORD_AUDIO (image-picker plugin, `microphonePermission: false`) and SYSTEM_ALERT_WINDOW (`android.blockedPermissions`), both verified in a fresh prebuild manifest.
+**What was hard / broke:** Three spec assumptions were wrong, and each would have shipped a bug. (1) `FileSystem.documentDirectory` from the main `expo-file-system` import throws at runtime in SDK 55 — and no gate catches it, since the names exist. (2) The swipe-to-complete/delete the brief was protecting were removed in v1.3.0 (`bf057e8`); a stale memory note still listed them. (3) expo-image-picker's config plugin is auto-applied and silently adds a microphone permission. Also caught my own test-harness bugs twice: a test that modelled an impossible sequence, and a stale-closure test that read the wrong responder and reported the old hook as fine.
+**Patterns learned:** Before building on a brief's premise, verify it exists in the code — briefs inherit stale beliefs from memory. After adding any native dependency, run a fresh `expo prebuild` and read the actual manifest; config plugins auto-apply and add permissions. Code that deletes user files needs a matching key immune to formatting (file name, not URI) and must rebuild paths from its own folder. When a test result contradicts a confident claim, check the harness before accepting either.
+**APK:** not built — committed locally, awaiting push instruction
+
+---
+
+## Cycle 10 — 2026-09-27 (Daily build, part A of 3) — v1.12.0
+**Commit:** 40345af (app), 758bf1d (lint gate)
+**What changed:**
+- Step 0: confirmed the notification-duplication fix is live (f7c7c18). Root cause was discarded notification ids, not a race; locks, awaited `cancelExisting`, and once-per-cold-start daily/evening all verified in code. Gate passed, no changes.
+- Fix 1, drag glitch on Home: two causes. (a) `await saveTasks()` ran before `setTasks()`, so the list painted the old order for at least a frame, then snapped. (b) cross-group drops landed in the wrong place, because `sortOrder` was assigned by position across the combined list but the memo always re-buckets CRITICAL → SHALLOW → done. Now: state updates synchronously, persistence runs in the background, moves are clamped into the dragged task's own priority group, completed tasks aren't draggable, and the `Math.random()` key fallback is gone.
+- Fix 2, inconsistent gap on Home: the island and pill row were two separately absolute-positioned views, with the pills at a hardcoded `insets.top + 82` assuming a fixed island height. The island's height is text-driven, so it grows with the system font-size setting and OEM fonts. Now one positioned block in normal flow, a fixed `SPACING.lg` gap, and list padding derived from the block's measured height instead of the old `insets.top + 130`.
+- Fix 3, multi-select onboarding on Q1–Q3: answers stored as arrays in tap order; single-select Q4–Q5 unchanged. New `utils/onboardingAnswers.js` reads both the old string format and arrays. Notification-permission personalization uses the first option tapped, still reading `challenge` (QUESTIONS[0], asked at step 1).
+- Build 4, progress check-ins: new `checkinService.js`. Every 3h from morning+3h, skipping slots <60 min before evening, today's remaining slots plus tomorrow's, only for days with pending tasks. Stable `checkin-YYYY-MM-DD-HHMM` identifiers, cancel-all-checkin-* before every reschedule, own `vaxmo-checkins` channel at default importance, Settings toggle (default ON). Reschedules on cold start, foreground, morning/evening time changes — and on every task write via a new `onTasksSaved` listener in `saveTasks()`, since every task mutation in the app already goes through it.
+- Notifications switch now sticks: `areNotificationsEnabled()` in notificationService is the single reader of the setting (ProfileScreen and checkinService call it too). Gated every scheduler, not just launch and foreground — task create/edit, Daily Review reschedule and the all-complete notification all ignored the switch as well. Cold start clears everything once when off; turning it back on rebuilds everything once. Reversed checkinService/notificationService so the dependency is one-way (no import cycle).
+- Made `npm run lint:undef` a required Phase 5 gate in CLAUDE.md, config checked in as `eslint.undef.config.cjs`. Whole codebase passes. Lint deps installed with npm@10.9.3 to avoid the lockfile drift; `npm@10.9.3 ci` verified.
+**What was hard / broke:** Nearly shipped a crash. `questionHint` used `SPACING?.sm` in a file that never imported `SPACING`. Optional chaining guards against an undefined *value*, not an undeclared *name*, so it would have thrown a ReferenceError on the first onboarding question — and `expo export` passed regardless, because bundling doesn't check for undeclared identifiers. Caught by reading, then added an ESLint `no-undef` + `react/jsx-no-undef` pass over every changed file, and proved it works by reintroducing the bug in a scratch copy. Also found a pre-existing bug: the master "Daily Reminders" toggle was only read by ProfileScreen, so turning notifications off never survived the next cold start or foreground. Fixed in the same cycle at the user's request.
+**Patterns learned:** `expo export` is not a correctness check — it will happily bundle a file that crashes on first render. Run `no-undef` on changed files, and negative-test the linter once so a clean result is trusted. For a single-choke-point persistence function, a listener set beats wiring side effects into every caller. A "skip if busy" lock loses updates that arrive mid-run; use lock-plus-rerun-flag so concurrent requests coalesce without being dropped.
+**APK:** not built — awaiting instruction
+
+---
+
 ## Cycle 9 — 2026-09-07
 **Commit:** f7c7c18
 **What changed:**
