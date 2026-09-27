@@ -4,6 +4,8 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 
 ## Active
 
+- [ ] P1: Publish the updated privacy policy to https://n3byoo.github.io/vaxmo-privacy/ BEFORE any Play release that includes v1.13.0+. The app now requests CAMERA; the public page still lists the old permission set. The repo copy (docs/privacy-policy.html) is already updated.
+- [ ] P3: Optionally block the unused Maven-sourced permissions (c2dm.RECEIVE, ~15 launcher-badge permissions, Install Referrer bind) via android.blockedPermissions. All normal and harmless — cosmetic only.
 - [ ] P1: Upload AAB v1.11.0 versionCode 5 to Play Console internal testing. versionCode 4 is already consumed on the track, so every new upload needs a strictly higher number — eas.json autoIncrement handles this, but note that failed builds consume numbers too.
 - [ ] P1: Upgrade the 10 packages `expo install --check` flags — react-native
       0.83.2 → 0.83.10 and expo 55.0.9 → 55.0.31 among them. Needs its own cycle:
