@@ -80,6 +80,32 @@ Template for each cycle:
 
 ---
 
+## Cycle 14 — 2026-10-01 (Daily build, second prompt) — v1.14.0
+**Commit:** 7f701e0
+**What changed:**
+- One native pager (react-native-pager-view 8.0.0, the SDK 55 pin) holds Today, Upcoming, On Hold and Profile. It tracks the finger, settles past the midpoint or on a fling, and springs back otherwise.
+- Header island and pill row sit over the pager, not inside a page. Everything that moves with a swipe is driven from the pager's position + offset in a Reanimated shared value on the UI thread: the header and pills slide out with On Hold on the way to Profile, one blue highlight slides under the pills, pill labels and bottom-nav tabs cross-fade, and the + button fades. No React state changes per frame. Page state updates only when a page settles.
+- Every page change goes through `pager.setPage`: pill taps, bottom nav, notifications (`Home` now takes `{ page }`) and Clear All Data. The `'Profile'` route, which never existed, now maps to Home page 3.
+- Removed the old system completely: `useSwipeNavigation` (PanResponder) and TabContainer's Animated.Value Home/Profile slide. The PanResponders left are DailyReview slides, ImageViewer swipe-down and SwipeableBottomSheet. None of them changes tabs.
+- Reorder drag turns paging off from drag start until release, with a second re-enable in onDragEnd as a backstop.
+**What was hard / broke:** On Android, a plain RN View returns true from `onTouchEvent`, so any overlay above a native pager blocks swipes that start on it. The header island is wrapped in `pointerEvents="none"` so a swipe that starts on it still pages. The FAB layer is `box-none`. The pills are still touch targets, so a swipe that starts exactly on a pill does not page. `npx expo install` was replaced by npm 10.9.3 (the lockfile hazard), and the dependency was hand-pinned to the exact `8.0.0` that expo install would have written.
+**Patterns learned:** For page-linked UI, keep one scroll shared value (position + offset) and drive everything from it with small clamp/interpolate worklets. These worklets can be unit-tested in Node by pulling the functions out of the source file. Equal-width pills mean the highlight needs only a translateX. Its width is set once, at layout. Cross-fading two stacked label layers gives a smooth colour change without animating text colour.
+**APK:** https://github.com/N3byoo/Vaxmo/releases/download/v1.14.0-58/Vaxmo-v1.14.0.apk (Build 58, both prompts in one push)
+
+---
+
+## Cycle 13 — 2026-10-01 (Daily build, first prompt)
+**Commit:** c9b8148
+**What changed:**
+- SHALLOW is now displayed as NORMAL. This is display only, and the stored value stays `'shallow'`. Every label goes through `getPriorityLabel()`.
+- AlarmScreen, Phase 1, with no native code and no full-screen intent. It shows the clock, the task title and 2 lines of notes, plus CLOSE and REMIND ME LATER (2, 5, 10, 15 or 30 min; 1, 2 or 3 h). A snooze uses a stable `alarm-snooze-<taskId>` id, so a new snooze replaces the old one and never adds a second. A snooze is cancelled when its task is completed or deleted, or its alarm is turned off (`reconcileAlarmSnoozes` on the save listener). The screen opens when an alarm is tapped, including from a cold start, and when an alarm fires while the app is in the foreground.
+- Fixed a cold-start bug that was already there: routes from a notification tap were dropped while the navigator was not ready. They are now queued, replayed from `onReady` and deduped.
+**What was hard / broke:** The routing logic was moved to an RN-free module so it could be tested. Default-action ids are matched against the library's real constant.
+**Patterns learned:** Give anything that can be scheduled more than once a stable identifier. Then "replace" comes for free and "duplicate" can't happen.
+**APK:** shipped in the same push as Cycle 14.
+
+---
+
 ## Cycle 12 — 2026-09-27 (Daily build, part C of 3)
 **Commit:** 2e1d401 — committed locally, NOT pushed
 **What changed:**

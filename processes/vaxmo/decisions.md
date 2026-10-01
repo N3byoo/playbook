@@ -9,3 +9,4 @@
 | Skills repo | n3byoo/playbook (separate repo) | Reusable across all future projects. Not siloed in Vaxmo. |
 | Build automation | GitHub Actions on push to master | Removes manual EAS command. Every push = new APK in ~20 min. |
 | Font | System default | No custom fonts to keep bundle small and startup fast. |
+| Priority label | Second priority is displayed as NORMAL (internal value stays 'shallow') | Clearer to users than SHALLOW. Display only, no migration: stored values and color tokens keep the old name. All labels go through getPriorityLabel(). |
