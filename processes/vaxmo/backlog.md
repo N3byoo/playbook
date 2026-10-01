@@ -4,6 +4,8 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 
 ## Active
 
+- [ ] P1: Test v1.14.0 on a real device: the pager at 60fps; reorder drag on Today never turns the page; vertical scroll never pages; tapping an alarm (warm and cold start) opens AlarmScreen; snooze replaces rather than stacks. Swiping from a pill does not page (pills are touch targets). Decide if that is acceptable.
+- [ ] P2: AlarmScreen Phase 2: full-screen intent (USE_FULL_SCREEN_INTENT) so an alarm shows over the lock screen. Check the Play policy for that permission first.
 - [ ] P1: Publish the updated privacy policy to https://n3byoo.github.io/vaxmo-privacy/ BEFORE any Play release that includes v1.13.0+. The app now requests CAMERA; the public page still lists the old permission set. The repo copy (docs/privacy-policy.html) is already updated.
 - [ ] P3: Optionally block the unused Maven-sourced permissions (c2dm.RECEIVE, ~15 launcher-badge permissions, Install Referrer bind) via android.blockedPermissions. All normal and harmless — cosmetic only.
 - [ ] P1: Upload AAB v1.11.0 versionCode 5 to Play Console internal testing. versionCode 4 is already consumed on the track, so every new upload needs a strictly higher number — eas.json autoIncrement handles this, but note that failed builds consume numbers too.
