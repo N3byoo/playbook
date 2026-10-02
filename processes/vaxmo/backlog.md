@@ -5,7 +5,7 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 ## Active
 
 - [ ] P1: Device-test v1.15.0 real alarms: locked/screen off, Vaxmo killed, home screen and another app (heads-up), CLOSE / REMIND ME LATER stop at once, 60 s → missed notice, survives restart and update, migration rings once, full-screen and exact-alarm off fallbacks.
-- [ ] P1: Before a Play release with v1.15.0+: answer the Play Console full-screen intent declaration (USE_FULL_SCREEN_INTENT; Vaxmo is an alarm app, which is an allowed use).
+- [ ] P1: Before a Play release with v1.15.0+: complete the Play Console full-screen intent declaration. Play only pre-grants USE_FULL_SCREEN_INTENT to apps whose CORE function is alarms or calling; Vaxmo (a task manager) will likely not qualify, so expect it off by default on Android 14+. That is already handled: the explainer + Settings row let the user turn it on, and the alarm falls back to a looping heads-up.
 - [ ] P3: Remove the React AlarmScreen and its Alarm route once no pre-v1.15 alarm notifications can still be tapped; the native AlarmActivity replaced it.
 - [ ] P3: The pager tap slide takes ~3x longer for Today ↔ Profile (ViewPager2 smooth-scroll time scales with distance). Feel-check on device.
 - [ ] P1: Test v1.14.0+ on a real device: the pager at 60fps; reorder drag on Today never turns the page; vertical scroll never pages; tapping an alarm (warm and cold start) opens AlarmScreen; snooze replaces rather than stacks. Swiping from a pill does not page (pills are touch targets). Decide if that is acceptable.
