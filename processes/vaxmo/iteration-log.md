@@ -80,6 +80,30 @@ Template for each cycle:
 
 ---
 
+## Cycle 16 — 2026-10-02 (Real alarms: native module)
+**Commit:** 50f3b8e (+ 1b7ec16 version bump to 1.15.0)
+**What changed:**
+- New local Expo module `modules/vaxmo-alarm` (Kotlin). It is linked via `expo.autolinking.nativeModulesDir`, and `expo-modules-autolinking resolve` confirms the link. AlarmManager `setAlarmClock` is used when exact alarms are allowed, otherwise `setAndAllowWhileIdle`. Alarms are persisted natively and re-registered on BOOT_COMPLETED, MY_PACKAGE_REPLACED and exact-alarm permission changes.
+- Ringing: a notification on the existing `vaxmo-alarm-*` channels (ALARM stream, the task's own sound) with `FLAG_INSISTENT`, so the sound and vibration loop, plus a full-screen intent to a native `AlarmActivity` (showWhenLocked + turnScreenOn). It stops on CLOSE or REMIND ME LATER. After 60 s, `setTimeoutAfter` plus a timeout alarm end it and leave a silent "missed alarm" notification.
+- All task alarm scheduling moved from expo-notifications to the module (new, edit, complete, delete, alarm off, snooze, notifications off, Clear All). A one-time migration cancels expo alarm notifications and re-registers pending snoozes at their original time.
+- USE_FULL_SCREEN_INTENT added, with a one-time explainer and a Settings row "Full-screen alarms" (Android 14+). The exact-alarm tip now shows only when exact alarms are actually off.
+**What was hard / broke:** A local Gradle build failed before compiling: with JDK 21, RN's gradle-plugin pulls foojay-resolver 0.5.0, which crashes on Gradle 9 (IBM_SEMERU). Building with JDK 17, as CI does, works. Android also sends a notification's deleteIntent when `setTimeoutAfter` expires. Treating every delete as a dismissal would have swallowed the missed-alarm notice, so a delete near the 60 s mark is treated as a timeout.
+**Patterns learned:** Prefer FLAG_INSISTENT over a foreground service for looping alarm sound: no FGS type, no Play declaration, and it works even when the alarm fired inexactly. A native alarm screen beats a deep link into the JS app over the lock screen: it shows with no bundle load and can't expose the rest of the app. On an unlocked phone in use, Android shows a full-screen intent as a heads-up banner; that is OS policy for every alarm app.
+**APK:** https://github.com/N3byoo/Vaxmo/releases/download/v1.15.0-59/Vaxmo-v1.15.0.apk (Build 59). Permissions read from the built APK: identical to v1.13.0 except + USE_FULL_SCREEN_INTENT.
+
+---
+
+## Cycle 15 — 2026-10-02 (Tap navigation is one slide)
+**Commit:** 86e61c4
+**What changed:**
+- Tapping a pill or the bottom nav now looks like exactly ONE neighbour slide, however far apart the pages are. During a tap the pager's `pageMargin` is set to `width/k − width`, so ViewPager2's page transformer draws the source and target exactly one screen apart. The pager's own animated `setPage` then looks like a single slide. Pages in between are hidden, and the margin returns to 0 afterwards.
+- Today ↔ On Hold: the highlight fades from the old pill to the new one and never crosses Upcoming. HOME from Profile returns to the tab that was open before. Swipes are unchanged; a test checks they are identical to v1.14.0 at every position.
+**What was hard / broke:** The obvious fix (jump without animation to the neighbour, then animate) flashes the neighbour. pager-view hosts each page in a clipping FrameLayout, so a page can't be drawn outside its slot. Read ViewPager2 1.1.0's source to confirm `setPageTransformer` applies at once (`requestTransform`). That is why the in-between pages are hidden one frame before the margin is set.
+**Patterns learned:** Read the native library source before choosing between hacks. The transformer offset `i − (position + offset)` made the maths exact and testable in Node.
+**APK:** shipped in the Cycle 16 push (v1.15.0).
+
+---
+
 ## Cycle 14 — 2026-10-01 (Daily build, second prompt) — v1.14.0
 **Commit:** 7f701e0
 **What changed:**
