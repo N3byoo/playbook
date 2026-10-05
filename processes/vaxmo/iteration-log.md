@@ -80,6 +80,18 @@ Template for each cycle:
 
 ---
 
+## Cycle 17 — 2026-10-04 (Daily build: three fixes) — v1.16.0
+**Commit:** c7bab44
+**What changed:**
+- Close Your Day shows only when today's review is not done AND (all of today's missions are done after 5 PM, OR it's past the evening review time). Before 5 PM with everything done, Home shows a quiet "All missions done" note. It is re-checked on focus, on foreground, and by a timer at the next boundary. The light review of today gets "Close day early", which switches to the full review.
+- The time picker offers every minute (00–59), with no rounding.
+- Task time notifications and overdue reminders are now grouped by minute. One or two keep their own notifications; three or more become one summary. Everything is scheduled by a single pass (stable ids, cancel by prefix, lock with rerun) that runs after every task save, on foreground and on cold start.
+**What was hard / broke:** Root cause of the repeats: a task saved without a time is stored as due 23:59:59, so every such task's overdue reminder fired together at 00:29:59. Two older bugs turned up along the way. Close Your Day's evening rule never fired, because it read `evening_review_time`, a key nothing writes; it now reads the real setting. Opening the picker on :58 or :59 rounded to 60, past the end of the 12-item wheel.
+**Patterns learned:** When notifications depend on each other (grouping), per-call-site scheduling can't be right. Make one pass the only scheduler and let call sites return the stable ids. Keep the plan a pure function (`planTaskNotifications`) so the grouping rules are testable without the OS.
+**APK:** https://github.com/N3byoo/Vaxmo/releases/download/v1.16.0-60/Vaxmo-v1.16.0.apk (Build 60)
+
+---
+
 ## Cycle 16 — 2026-10-02 (Real alarms: native module)
 **Commit:** 50f3b8e (+ 1b7ec16 version bump to 1.15.0)
 **What changed:**

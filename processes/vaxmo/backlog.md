@@ -4,6 +4,8 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 
 ## Active
 
+- [ ] P1: Device-test v1.16.0: Close Your Day hidden before 5 PM with all done (calm note shown), appears at 5 PM without a task change; Close day early from the light review saves the day; picker shows exact minutes; 3+ tasks at one time → one summary, completing one → back to singles; undated tasks → one overdue summary at 00:30.
+- [ ] P3: Decide whether undated tasks should get an overdue reminder at all — today it fires at 00:29:59 (just after midnight), now as one summary.
 - [ ] P1: Device-test v1.15.0 real alarms: locked/screen off, Vaxmo killed, home screen and another app (heads-up), CLOSE / REMIND ME LATER stop at once, 60 s → missed notice, survives restart and update, migration rings once, full-screen and exact-alarm off fallbacks.
 - [ ] P1: Before a Play release with v1.15.0+: complete the Play Console full-screen intent declaration. Play only pre-grants USE_FULL_SCREEN_INTENT to apps whose CORE function is alarms or calling; Vaxmo (a task manager) will likely not qualify, so expect it off by default on Android 14+. That is already handled: the explainer + Settings row let the user turn it on, and the alarm falls back to a looping heads-up.
 - [ ] P3: Remove the React AlarmScreen and its Alarm route once no pre-v1.15 alarm notifications can still be tapped; the native AlarmActivity replaced it.
