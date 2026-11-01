@@ -2,6 +2,20 @@
 
 Template for each cycle:
 ```
+## Final build — 2026-11-01
+**Commits:** master 3cc152b (v1.18.0); vaxmo-api main 2f8bb7f, Worker 44cbdf14 with parse hash f430c263
+**What changed:**
+- User model and tools-from-plans merged; the v11 versions deleted from Cloudflare
+- Tools from plans moved into code (src/services/toolWords.js): counters and streaks, 67 phrasing tests
+- Evening composer: POST /v1/compose with its own prompt, number check on server and phone, code-only fallback, Settings switch. Eval c2 21/21 in one full run
+- Zone by time of day: morning push and first critical, midday board, evening review prompt
+- Release prep: privacy policy published, Data Safety and listing drafted, 32 countries listed, AAB on EAS, release installed over the real app
+**What was hard / broke:** v10 answers most habit phrases with a question or a routine, so the parser reads routines and the clarify fragment too. A second eval run hit the eval pool's daily cap after 9 cases. adb key events looked like a stuck overlay (Android's focus highlight). A stray test tap opened the mic in the release check app for a few seconds; nothing was sent.
+**Patterns learned:** Keep a repeating notification out of anything day-specific: use a one-off with plain mornings queued behind it. Check the phone as its own step before acting on it. force-stop cancels scheduled alarms.
+**APK:** GitHub release from master; AAB from EAS, version code 6
+
+---
+
 ## Approved round — 2026-11-01
 **Commits:** master c199a1b; user-model 1da2209; tools-from-plans 5b7895d; vaxmo-api prompt-v11 (rejected)
 **What changed:**
