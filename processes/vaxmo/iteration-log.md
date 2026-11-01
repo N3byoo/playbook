@@ -2,6 +2,18 @@
 
 Template for each cycle:
 ```
+## Solo round — 2026-11-01
+**Commits:** master 9f54a88 (capture merged); onboarding-v2 72ac4f4; context-tools 57279d4
+**What changed:**
+- Capture merged to master by fast-forward; tracker TODAY label and selected-day alignment fixed
+- Onboarding v2 on its own branch: answers set times, cap, alarms, check-ins; first capture on the real Home; behaviour log seeded
+- Context tools prototype: Counter, Streak, Countdown in an adaptive zone on Home, from long-pressing a mission
+**What was hard / broke:** Phone was PIN-locked, so test apps ran over the lock screen under their own package ids. Reanimated exiting views stuck on screen; setPage peek ran 71% of the way; drag end reported twice; tool row flipped the pager.
+**Patterns learned:** Separate package id per branch gives a true first launch without touching real data. Measure animations instead of trusting a screenshot.
+**APK:** GitHub Actions direct build of master; link in the report.
+
+---
+
 ## Cycle N — YYYY-MM-DD
 **Commit:** [hash]
 **What changed:** [1–3 bullets]
