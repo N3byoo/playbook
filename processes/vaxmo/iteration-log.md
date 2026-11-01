@@ -2,6 +2,19 @@
 
 Template for each cycle:
 ```
+## Approved round — 2026-11-01
+**Commits:** master c199a1b; user-model 1da2209; tools-from-plans 5b7895d; vaxmo-api prompt-v11 (rejected)
+**What changed:**
+- Onboarding v2 and tools merged; ticking a mission moves its tool; docs/context-injection.md is the strategy
+- Release build installed over the real app; photo first capture and the peek checked in a release build
+- User model and "What Vaxmo knows about you" on a branch
+- Prompt v11 (tool action) measured once: rejected, v10 stays. App side built and tested against it at 0% traffic
+**What was hard / broke:** Gemini outage of about 40 minutes. The CI runner's disk filled up. Tools were dropped in the server because the model left out their title.
+**Patterns learned:** Cloudflare versions at 0% with an override header test a prompt with no local key and no real traffic. Set the pass rule before the eval runs.
+**APK:** GitHub release v1.17.0-64
+
+---
+
 ## Solo round — 2026-11-01
 **Commits:** master 9f54a88 (capture merged); onboarding-v2 72ac4f4; context-tools 57279d4
 **What changed:**

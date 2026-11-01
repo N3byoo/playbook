@@ -4,11 +4,12 @@ Priority: P1 = high value + low effort | P2 = high value + medium effort | P3 = 
 
 ## Active
 
-- [ ] P1: Land the drag fix on master: a mission dropped across the Critical line stays where it was dropped on screen until the list next changes (on branches onboarding-v2 and context-tools).
 - [ ] P1: Owner test of onboarding-v2 (app "Vaxmo Onboarding") and merge decision. Then: critical cap, alarms-for-criticals and briefing settings have no Settings rows yet.
 - [ ] P2: Morning briefing with the first critical is fixed at the last cold start; refresh it when tasks change.
-- [ ] P2: Context tools: decide after the owner feels the prototype. If kept: completing a mission should tick its streak or counter; privacy draft needs a line (tools keep the mission text on the phone).
-- [ ] P3: Add a real photo capture to a device test (not run unattended: the camera would capture the room).
+- [ ] P1: Owner decision: a narrower prompt v12 (counters and streaks only) now that v11 was rejected. Needs another eval.
+- [ ] P1: Merge user-model and tools-from-plans when the owner has tried them.
+- [ ] P2: Privacy draft needs a line: tools keep the mission text on the phone.
+- [ ] P3: Real camera shot as first capture: the release check fed a test page in after the camera step.
 - [ ] P1: Device-test v1.16.0: Close Your Day hidden before 5 PM with all done (calm note shown), appears at 5 PM without a task change; Close day early from the light review saves the day; picker shows exact minutes; 3+ tasks at one time → one summary, completing one → back to singles; undated tasks → one overdue summary at 00:30.
 - [ ] P3: Decide whether undated tasks should get an overdue reminder at all — today it fires at 00:29:59 (just after midnight), now as one summary.
 - [ ] P1: Device-test v1.15.0 real alarms: locked/screen off, Vaxmo killed, home screen and another app (heads-up), CLOSE / REMIND ME LATER stop at once, 60 s → missed notice, survives restart and update, migration rings once, full-screen and exact-alarm off fallbacks.
